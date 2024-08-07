@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     elif not BTN_3.value():
         Settings["widget"] += 1
-        if Settings["widget"] > 1:
+        if Settings["widget"] > 2:
             Settings["widget"] = 0
         settings_save()
         sleep_ms(1000)

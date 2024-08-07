@@ -91,6 +91,10 @@ class Drawing:
             self.canvas.vline(x - x_r, y - y_r, 2 * y_r + 1, color)
             self.canvas.vline(x - y_r, y - x_r, 2 * x_r + 1, color)
 
+    def image(self, pixel_array):
+        pixel_array = framebuf.FrameBuffer(pixel_array, HEIGHT, WIDTH, framebuf.MONO_VLSB)
+        self.canvas.blit(pixel_array, 0, 0)
+
     def tiny_text(self, string, x, y, color=BLACK):
         y += TOP
         self.canvas.text(string, x, y, color)

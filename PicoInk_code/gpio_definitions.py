@@ -1,5 +1,4 @@
 from machine import Pin, ADC, SPI
-from machine import Pin, ADC, SPI
 
 
 # display WeAct
@@ -28,6 +27,7 @@ SPI_DISPLAY = SPI(SPI_NUM, baudrate=1_000_000, sck=SCL_PIN, mosi=SDA_PIN)
 DONE_PIN = Pin(9, Pin.OUT)
 
 # analog
+Pin(28, Pin.OPEN_DRAIN, None)
 BATT_ADC = ADC(28)
 TEMPER_ADC = ADC(4)
 

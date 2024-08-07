@@ -20,6 +20,8 @@ def load_show_save(full_refresh, bat_soc, sensor):
         screens.show_chart(values, minimum, maximum, bat_soc, full_refresh)
     elif Settings["widget"] == 1:
         screens.show_big_val(value, bat_soc, full_refresh)
+    elif Settings["widget"] == 2:
+        screens.show_gauge(value, minimum, maximum, bat_soc, full_refresh)
 
     one_byte_value = num_to_byte(value, minimum, maximum)
     save_value(one_byte_value, "temperatures.dat")

@@ -27,24 +27,90 @@ def web_page():
     forms = ""
     sensor_settings = list(sensor.settings.items())
     general_settings = list(Settings.items())
+
     for k, v in sensor_settings + general_settings:
         if k[0].islower():
             continue
+        if "passw" in k.lower():
+            form_type = "password"
+        else:
+            form_type = "text"
+
         forms += f"""
         <form action="/get" accept-charset="UTF-8">
-            {k:<10}: <input type="text" name="{k}" value="{v}">
-            <input type="submit" value="Submit">
-        </form><br>
+            <div class="form-group">
+                <label for="{k}">{k}:</label>
+                <input type={form_type} id="{k}" name="{k}" value="{v}">
+            </div>
+            <input type="submit" value="OK">
+        </form>
+        <br>
         """
 
     html = f"""
-    <!DOCTYPE HTML><html><head>
+    <!DOCTYPE HTML>
+    <html>
+    <head>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-      <title>WUD</title>
-          </head><body style="font-family:monospace;">
+        <title>WUD</title>
+        <style>
+            body {{
+                font-family: monospace;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                background-color: #f4f4f4;
+            }}
+            .container {{
+                max-width: 400px;
+                width: 100%;
+                background: #fff;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                border-radius: 8px;
+            }}
+            form {{
+                margin-bottom: 20px;
+            }}
+            .form-group {{
+                margin-bottom: 10px;
+            }}
+            label {{
+                display: block;
+                margin-bottom: 5px;
+            }}
+            input[type="text"],
+            input[type="number"],
+            input[type="password"] {{
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 5px;
+                box-sizing: border-box;
+            }}
+            input[type="submit"] {{
+                width: 100%;
+                padding: 10px;
+                cursor: pointer;
+                box-sizing: border-box;
+                margin-top: 5px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
             {forms}
-          </body></html>
+            <form action="/get" accept-charset="UTF-8">
+                <div class="form-group">
+                    <input type="text" id="save_form" name="save_form" value="save_form" style=display:None>
+                </div>
+                    <input type="submit" value="SAVE AND RESTART">
+            </form>
+        </div>
+    </body>
+    </html>
     """
+
     return html.encode("utf-8")
 
 
@@ -62,39 +128,76 @@ def unquote(s):
         return str(s)
 
 
-def parse_request(request):
-    setting = (request[9:].split()[0].split("="))
-    try:
-        if Settings.get(setting[0], None) is not None:
-            Settings[setting[0]] = unquote(setting[1])
-        elif sensor.settings.get(setting[0], None) is not None:
-            sensor.settings[setting[0]] = unquote(setting[1])
-    except IndexError:
-        pass
-    # try:
-    #     Settings[setting[0]] = unquote(setting[1])
-    # except KeyError:
-    #     pass
-    # except IndexError:
-    #     pass
-    #
-    # try:
-    #     sensor.settings[setting[0]] = unquote(setting[1])
-    # except KeyError:
-    #     pass
-    # except IndexError:
-    #     pass
+def byebye_page():
+    byebye = """
+    <!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>WUD</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Everything is set.</p>
+        <p>Device is rebooting.</p>
+        <p>Close the page please.</p>
+    </div>
+</body>
+</html>
+    """
+    return byebye
+
+def parse_request(request: str):
+    # print(request)
+    if request.startswith("GET /get?"):
+        try:
+            setting = (request[9:].split()[0].split("="))
+            # print(setting[0], ": ", setting[1])
+            if Settings.get(setting[0], None) is not None:
+                Settings[setting[0]] = unquote(setting[1])
+            elif sensor.settings.get(setting[0], None) is not None:
+                sensor.settings[setting[0]] = unquote(setting[1])
+            elif setting[0] == "save_form":
+                return False
+
+        except IndexError:
+            print("Index error")
+
+    return True
 
 
 def save_and_restart(_):
     global Done
     if not Done:
+        Done = True
         settings_save()
         sensor.settings_save()
         clear_display()
+        AP.active(False)
         sleep_ms(1000)
         machine.reset()
-    Done = True
 
 
 def start_web():
@@ -107,12 +210,18 @@ def start_web():
     scr_partial = False
     while True:
         conn, addr = S.accept()
-        request = conn.recv(1024)
+        request = conn.recv(2048)
         request = request.decode("utf-8")
-        parse_request(request)
-        response = web_page()
+        server_in_progress = parse_request(request)
+        if server_in_progress:
+            response = web_page()
+        else:
+            response = byebye_page()
         conn.sendall(response)
         conn.close()
+
+        if not server_in_progress:
+            save_and_restart(None)
 
         all_settings = OrderedDict()
         all_settings.update(sensor.settings)
