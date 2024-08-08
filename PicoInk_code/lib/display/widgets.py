@@ -1,10 +1,12 @@
 from lib.display.drawing_bw import Drawing, BLACK, WHITE
 from lib.display.epd_2in13_bw import SEEN_WIDTH, SEEN_HEIGHT
+from lib.display.templates import Gauge, Gauge_needle_end_lookup, Gauge_axis_right_lookup, Gauge_axis_left_lookup
 
 
 class Widgets(Drawing):
     def __init__(self):
         super().__init__()
+        self.wifi_indicator_coor = 40, 10
 
     def chart(self, values, minimum, maximum, color=BLACK):
         x = 0
@@ -12,7 +14,6 @@ class Widgets(Drawing):
         w = SEEN_HEIGHT-1
         h = 0
 
-        print(values)
         optimized_values = [int(((val - minimum) / (maximum - minimum)) * ((y - h) + h)) for val in values]
 
         thickness = 3
@@ -46,6 +47,49 @@ class Widgets(Drawing):
         self.fill_rect(w-32, h, 33, 12, WHITE)
         self.tiny_text(str(values[-1]), w-31, h, color)
 
+    def gauge(self, value, minimum, maximum):
+        if value > maximum:
+            value = maximum
+        if value < minimum:
+            value = minimum
+        optimized_value = int(((value - minimum) / (maximum - minimum)) * len(Gauge_needle_end_lookup)-1)
+
+        self.image(Gauge)
+
+        x_ax_l, y_ax_l = Gauge_axis_left_lookup[optimized_value]
+        x_ax_r, y_ax_r = Gauge_axis_right_lookup[optimized_value]
+        x_ax_c, y_ax_c = 125, 109
+
+        x_end, y_end = Gauge_needle_end_lookup[optimized_value]
+
+        self.line(x1=x_ax_r, y1=y_ax_r, x2=x_end, y2=y_end)
+        self.line(x1=x_ax_l, y1=y_ax_l, x2=x_end, y2=y_end)
+
+        for x in range(x_ax_l, x_ax_c + 3):
+            self.line(x1=x, y1=y_ax_l, x2=x_end, y2=y_end)
+        for y in range(y_ax_c - 3, y_ax_l):
+            self.line(x1=x, y1=y, x2=x_end, y2=y_end)
+
+        for x in range(x_ax_l, x_ax_c + 3):
+            self.line(x1=x, y1=y_ax_l, x2=x_end, y2=y_end)
+        for y in range(y_ax_l, y_ax_c + 3):
+            self.line(x1=x, y1=y, x2=x_end, y2=y_end)
+
+        for x in range(x_ax_c - 3, x_ax_r):
+            self.line(x1=x, y1=y_ax_r, x2=x_end, y2=y_end)
+        for y in range(y_ax_r, y_ax_c + 3):
+            self.line(x1=x, y1=y, x2=x_end, y2=y_end)
+
+        for x in range(x_ax_c - 3, x_ax_r):
+            self.line(x1=x, y1=y_ax_r, x2=x_end, y2=y_end)
+        for y in range(y_ax_c - 3, y_ax_r):
+            self.line(x1=x, y1=y, x2=x_end, y2=y_end)
+
+        # self.line(x_ax_l, y_ax_l, x_ax_r, y_ax_r, color=WHITE)
+
+        self.tiny_text(str(minimum), 5, 110)
+        self.tiny_text(str(maximum), 222, 110)
+
     def battery_indicator(self, soc, x, y, color=BLACK):
         w = 30
         h = 9
@@ -57,9 +101,11 @@ class Widgets(Drawing):
 
         self.fill_rect(soc_x, y, soc, h, color)
 
-    def signal_indicator(self, rssi, x, y, color=BLACK):
+    def signal_indicator(self, rssi, x=None, y=None, color=BLACK):
         w = 3
         h = 9
+        if x is None or y is None:
+            x, y = self.wifi_indicator_coor
         w_space = 1
         if rssi is not None:
             num_of_filled = ((rssi+100)/7.5)

@@ -34,6 +34,7 @@ TEMPER_ADC = ADC(4)
 # leds
 ONBOARD_LED = Pin('LED', Pin.OUT)
 GREEN_LED = Pin(22, Pin.OUT)
+RED_LED = Pin(17, Pin.OUT)
 
 # buttons
 BTN_1 = Pin(19, Pin.IN, Pin.PULL_UP)

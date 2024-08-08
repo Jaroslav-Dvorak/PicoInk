@@ -70,7 +70,7 @@ if __name__ == '__main__':
                         MQTT.disconnect()
                         sleep_ms(500)
                     # screens.widgets.rect()
-                    screens.widgets.signal_indicator(rssi, 40, 10)
+                    screens.widgets.signal_indicator(rssi)
                     screens.eink.show(screens.widgets.img, partial=True)
                 STA.disconnect()
 
