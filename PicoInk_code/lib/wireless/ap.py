@@ -169,6 +169,7 @@ def byebye_page():
     """
     return byebye
 
+
 def parse_request(request: str):
     # print(request)
     if request.startswith("GET /get?"):

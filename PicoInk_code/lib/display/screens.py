@@ -32,13 +32,18 @@ def show_big_val(curr_val, battery_soc, full_refresh=False):
 
 def show_gauge(curr_val, minimum, maximum, battery_soc, full_refresh=False):
     batt_coor = 215, 5
-    val_coor = 150, 110
     widgets.wifi_indicator_coor = 0, 15
+
+    curr_val = round(curr_val, 1)
+    half = (minimum + maximum) / 2
+    if curr_val < half:
+        val_coor = 150, 110
+    else:
+        val_coor = 70, 110
 
     widgets.clear()
     widgets.gauge(curr_val, minimum, maximum)
 
-    curr_val = round(curr_val, 1)
     widgets.tiny_text(str(curr_val), *val_coor)
 
     widgets.battery_indicator(battery_soc, *batt_coor)

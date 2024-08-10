@@ -48,11 +48,12 @@ class Widgets(Drawing):
         self.tiny_text(str(values[-1]), w-31, h, color)
 
     def gauge(self, value, minimum, maximum):
-        if value > maximum:
-            value = maximum
-        if value < minimum:
-            value = minimum
-        optimized_value = int(((value - minimum) / (maximum - minimum)) * len(Gauge_needle_end_lookup)-1)
+        resolution = len(Gauge_needle_end_lookup)-1
+        optimized_value = int(((value - minimum) / (maximum - minimum)) * resolution)
+        if optimized_value > resolution:
+            optimized_value = resolution
+        if optimized_value < 0:
+            optimized_value = 0
 
         self.image(Gauge)
 
@@ -61,9 +62,6 @@ class Widgets(Drawing):
         x_ax_c, y_ax_c = 125, 109
 
         x_end, y_end = Gauge_needle_end_lookup[optimized_value]
-
-        self.line(x1=x_ax_r, y1=y_ax_r, x2=x_end, y2=y_end)
-        self.line(x1=x_ax_l, y1=y_ax_l, x2=x_end, y2=y_end)
 
         for x in range(x_ax_l, x_ax_c + 3):
             self.line(x1=x, y1=y_ax_l, x2=x_end, y2=y_end)
@@ -86,6 +84,9 @@ class Widgets(Drawing):
             self.line(x1=x, y1=y, x2=x_end, y2=y_end)
 
         # self.line(x_ax_l, y_ax_l, x_ax_r, y_ax_r, color=WHITE)
+
+        self.line(x1=x_ax_r, y1=y_ax_r, x2=x_end, y2=y_end, color=WHITE)
+        self.line(x1=x_ax_l, y1=y_ax_l, x2=x_end, y2=y_end, color=WHITE)
 
         self.tiny_text(str(minimum), 5, 110)
         self.tiny_text(str(maximum), 222, 110)
