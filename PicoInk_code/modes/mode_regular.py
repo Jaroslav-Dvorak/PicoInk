@@ -5,7 +5,13 @@ from nonvolatile import Settings, save_value, get_last_values, num_to_byte, byte
 def load_show_save(full_refresh, bat_soc, sensor):
     minimum = sensor.displ_min
     maximum = sensor.displ_max
-    sensor_ok = sensor.get_values()
+    try:
+        sensor_ok = sensor.get_values()
+    except Exception as e:
+        print(e)
+        sensor_ok = False
+        return sensor_ok
+
     value = list(sensor.last_values.items())[0][1]
 
     filesize, byte_values = get_last_values(249, "temperatures.dat")
