@@ -8,10 +8,14 @@ from gpio_definitions import BTN_1
 import machine
 from sensor import sensor
 from lib.templates import websetup_style, byebye_style
+from lib.wireless.micropyserver import MicroPyServer
 
 AP = network.WLAN(network.AP_IF)
-S = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# S = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = MicroPyServer()
+
 Done = False
+SCR_partial = False
 
 
 def start_ap(ssid):
@@ -71,8 +75,7 @@ def web_page():
     </body>
     </html>
     """
-
-    return html.encode("utf-8")
+    return html
 
 
 def unquote(s):
@@ -143,31 +146,61 @@ def save_and_restart(_):
         machine.reset()
 
 
-def start_web():
+def server_response(request):
+    global SCR_partial
+
+    server_in_progress = parse_request(request)
+    if server_in_progress:
+        response = web_page()
+    else:
+        response = byebye_page()
+    server.send(response)
+
+    if not server_in_progress:
+        save_and_restart(None)
+
+    all_settings = OrderedDict()
+    all_settings.update(sensor.settings)
+    all_settings.update(Settings)
+    show_settings(all_settings, partial=SCR_partial)
+    SCR_partial = True
+
+
+def start_server():
     while not BTN_1.value():
         sleep_ms(200)
     sleep_ms(2000)
     BTN_1.irq(trigger=machine.Pin.IRQ_FALLING, handler=save_and_restart)
-    S.bind(('', 80))
-    S.listen(5)
-    scr_partial = False
-    while True:
-        conn, addr = S.accept()
-        request = conn.recv(2048)
-        request = request.decode("utf-8")
-        server_in_progress = parse_request(request)
-        if server_in_progress:
-            response = web_page()
-        else:
-            response = byebye_page()
-        conn.sendall(response)
-        conn.close()
+    server.add_route("/", server_response)
+    server.on_not_found(server_response)
+    server.start()
 
-        if not server_in_progress:
-            save_and_restart(None)
 
-        all_settings = OrderedDict()
-        all_settings.update(sensor.settings)
-        all_settings.update(Settings)
-        show_settings(all_settings, partial=scr_partial)
-        scr_partial = True
+# def start_web():
+#     while not BTN_1.value():
+#         sleep_ms(200)
+#     sleep_ms(2000)
+#     BTN_1.irq(trigger=machine.Pin.IRQ_FALLING, handler=save_and_restart)
+#     S.bind(('', 80))
+#     S.listen(5)
+#     scr_partial = False
+#     while True:
+#         conn, addr = S.accept()
+#         request = conn.recv(2048)
+#         request = request.decode("utf-8")
+#         server_in_progress = parse_request(request)
+#         if server_in_progress:
+#             response = web_page()
+#         else:
+#             response = byebye_page()
+#         conn.sendall(response)
+#         conn.close()
+#
+#         if not server_in_progress:
+#             save_and_restart(None)
+#
+#         all_settings = OrderedDict()
+#         all_settings.update(sensor.settings)
+#         all_settings.update(Settings)
+#         show_settings(all_settings, partial=scr_partial)
+#         scr_partial = True
