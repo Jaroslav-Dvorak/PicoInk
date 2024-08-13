@@ -313,3 +313,73 @@ Gauge_axis_left_lookup = (
 (120, 98),(120, 97),(120, 97),(120, 97),(120, 97),(121, 97),(121, 97),(121, 97),(121, 97),(121, 97),
 (122, 97),(122, 97),(122, 97),(122, 97)
 )
+
+websetup_style = """
+body {
+    font-family: monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 400px;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+form {
+    margin-bottom: 20px;
+}
+.form-group {
+    /* margin-bottom: 10px; */
+}
+label {
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: center;
+    font-size: x-large;
+}
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    /* margin-bottom: 5px; */
+    box-sizing: border-box;
+    font-size: x-large;
+}
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+"""
+
+byebye_style = """
+body {
+    font-family: monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 400px;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+"""

@@ -7,6 +7,7 @@ from utime import sleep_ms
 from gpio_definitions import BTN_1
 import machine
 from sensor import sensor
+from lib.templates import websetup_style, byebye_style
 
 AP = network.WLAN(network.AP_IF)
 S = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -52,49 +53,9 @@ def web_page():
     <html>
     <head>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-        <title>WUD</title>
+        <title>Picoink</title>
         <style>
-            body {{
-                font-family: monospace;
-                margin: 0;
-                padding: 20px;
-                display: flex;
-                justify-content: center;
-                background-color: #f4f4f4;
-            }}
-            .container {{
-                max-width: 400px;
-                width: 100%;
-                background: #fff;
-                padding: 20px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                border-radius: 8px;
-            }}
-            form {{
-                margin-bottom: 20px;
-            }}
-            .form-group {{
-                margin-bottom: 10px;
-            }}
-            label {{
-                display: block;
-                margin-bottom: 5px;
-            }}
-            input[type="text"],
-            input[type="number"],
-            input[type="password"] {{
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 5px;
-                box-sizing: border-box;
-            }}
-            input[type="submit"] {{
-                width: 100%;
-                padding: 10px;
-                cursor: pointer;
-                box-sizing: border-box;
-                margin-top: 5px;
-            }}
+            {websetup_style}
         </style>
     </head>
     <body>
@@ -129,33 +90,14 @@ def unquote(s):
 
 
 def byebye_page():
-    byebye = """
+    byebye = f"""
     <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-    <title>WUD</title>
+    <title>Picoink</title>
     <style>
-        body {
-            font-family: monospace;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
+        {byebye_style}
     </style>
 </head>
 <body>

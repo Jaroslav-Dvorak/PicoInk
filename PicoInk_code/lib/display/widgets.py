@@ -1,6 +1,6 @@
 from lib.display.drawing_bw import Drawing, BLACK, WHITE
 from lib.display.epd_2in13_bw import SEEN_WIDTH, SEEN_HEIGHT
-from lib.display.templates import Gauge, Gauge_needle_end_lookup, Gauge_axis_right_lookup, Gauge_axis_left_lookup
+from lib.templates import Gauge, Gauge_needle_end_lookup, Gauge_axis_right_lookup, Gauge_axis_left_lookup
 
 
 class Widgets(Drawing):

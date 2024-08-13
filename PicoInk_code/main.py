@@ -25,7 +25,7 @@ if __name__ == '__main__':
     full_refresh = False
     if not BTN_1.value():
         from modes.mode_setup import start_setup
-        start_setup("HBD_SETUP", battery_voltage)
+        start_setup("PICOINK", battery_voltage)
 
     elif not BTN_2.value():
         import modes.mode_testing as testing
