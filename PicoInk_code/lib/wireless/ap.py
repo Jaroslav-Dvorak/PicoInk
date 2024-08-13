@@ -56,7 +56,7 @@ def web_page():
     <!DOCTYPE HTML>
     <html>
     <head>
-        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=5">
         <title>Picoink</title>
         <style>
             {websetup_style}
