@@ -27,8 +27,8 @@ def send_discovery(name, unit, device_class=None):
               "unit_of_measurement": unit,
               "device": {"identifiers": BOARD_ID,
                          "name": DEVICE_NAME,
-                         "sw_version": "0.1.0",
-                         "model": "HBD-v1",
+                         "sw_version": "1.0.0",
+                         "model": "PicoInk",
                          "manufacturer": "JardaDvorak"
                          },
               "force_update": False,
@@ -45,6 +45,7 @@ def send_state(**kwargs):
     try:
         topic = f"{DEVICE_NAME}/sensor".encode("utf-8")
         payload = kwargs
+        payload["uid"] = BOARD_ID
         msg = json.dumps(payload).encode("utf-8")
         MQTT.publish(topic, msg, retain=False, qos=1)
     except Exception as e:

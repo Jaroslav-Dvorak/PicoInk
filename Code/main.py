@@ -1,6 +1,7 @@
 from measurement import batt_voltage, voltage_to_soc
 
 battery_voltage = batt_voltage()
+# battery_voltage = 2.66
 if battery_voltage < 2.6:                                   # turn off immediatelly to prevent draining battery
     from machine import Pin
     Pin(9, Pin.OUT).value(1)
@@ -22,6 +23,7 @@ if battery_voltage < 2.7:                                 # show battery dead sc
     RED_LED.value(0)
     DONE_PIN.value(1)
     sleep_ms(1_000)
+    screens.eink.epd_hw_init()
 
 
 # Start Wireless ASAP
@@ -91,15 +93,22 @@ if __name__ == '__main__':
                     STA.disconnect()
                     rssi = None
                 if rssi:
+                    screens.widgets.signal_indicator(rssi)
+                    screens.eink.show(screens.widgets.img, partial=True)
                     from lib.wireless.ha import send_state, connect_mqtt, MQTT
                     if connect_mqtt():
                         sensor.last_values["signal"] = rssi
-                        send_state(**sensor.last_values)
+                        if not send_state(**sensor.last_values):
+                            everything_ok = False
+                            screens.widgets.tiny_text("!MQTT", 60, 1)
+                            screens.eink.show(screens.widgets.img, partial=True)
                         MQTT.wait_msg()
                         MQTT.disconnect()
                         sleep_ms(500)
-                    screens.widgets.signal_indicator(rssi)
-                    screens.eink.show(screens.widgets.img, partial=True)
+                    else:
+                        everything_ok = False
+                        screens.widgets.tiny_text("!MQTT", 60, 1)
+                        screens.eink.show(screens.widgets.img, partial=True)
                 else:
                     everything_ok = False
                 STA.disconnect()
@@ -125,6 +134,7 @@ if __name__ == '__main__':
             sleep_ms(10_000)
 
             if wifi_active:
-                wifi_active = wifi_connect()
+                wifi_connect()
+                # wifi_active = wifi_connect()
 
             full_refresh = False
