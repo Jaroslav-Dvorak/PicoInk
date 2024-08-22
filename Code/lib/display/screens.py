@@ -91,6 +91,8 @@ def show_settings(settings, partial):
     for k, v in settings.items():
         if k[0].islower():
             continue
+        if "passw" in k.lower() and v:
+            v = "******"
         text = f"{k:<10}: {v}"
         widgets.tiny_text(text, 0, i*10)
         i += 1
