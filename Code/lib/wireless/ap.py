@@ -45,14 +45,8 @@ def web_page():
             form_type = "text"
 
         forms += f"""
-        <form method="post" action="/" accept-charset="UTF-8">
-            <div class="form-group">
                 <label for="{k}">{k}:</label>
-                <input type={form_type} id="{k}" name="{k}" value="{v}">
-            </div>
-            <input type="submit" value="OK">
-        </form>
-        <br>
+                <input type={form_type} id="{k}" name="{k}" value="{v}" onchange="this.form.submit();">
         """
 
     html = f"""
@@ -67,7 +61,13 @@ def web_page():
     </head>
     <body>
         <div class="container">
-            {forms}
+        <form method="post" action="/" accept-charset="UTF-8">
+            <div class="form-group">
+                {forms}
+            </div>
+            <input type="submit" value="OK">
+        </form>
+        <br>
             <form method="post" action="/" accept-charset="UTF-8">
                 <div class="form-group">
                     <input type="text" id="save_form" name="save_form" value="save_form" style=display:None>
@@ -106,9 +106,9 @@ def byebye_page():
 def parse_request(request: dict):
 
     for k, v in request.items():
-        if Settings.get(k):
+        if Settings.get(k) is not None:
             Settings[k] = v
-        if sensor.settings.get(k):
+        if sensor.settings.get(k) is not None:
             sensor.settings[k] = v
 
     if request.get("save_form"):
