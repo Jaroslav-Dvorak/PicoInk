@@ -102,9 +102,10 @@ class OneWire:
 _CONVERT = const(0x44)
 _RD_SCRATCH = const(0xBE)
 _WR_SCRATCH = const(0x4E)
+_CP_SCRATCH = const(0x48)
 
 
-class DS18X20:
+class DS18B20:
     def __init__(self, pin, filename):
         self.ow = OneWire(pin)
         self.buf = bytearray(9)
@@ -119,66 +120,73 @@ class DS18X20:
 
         self.last_values = {}
 
-    def scan(self):
-        return [rom for rom in self.ow.scan() if rom[0] in (0x10, 0x22, 0x28)]
+    def get_rom(self):
+        tries = 0
+        while tries < 100:
+            tries += 1
+            roms = self.ow.scan()
+            if len(roms) > 0:
+                rom = ''.join([byte.to_bytes(1, 'big').hex() for byte in roms[0]])
+                return rom
+        return None
 
     def convert_temp(self):
         self.ow.reset(True)
         self.ow.writebyte(self.ow.SKIP_ROM)
         self.ow.writebyte(_CONVERT)
 
-    def read_scratch(self, rom):
+    def read_scratch(self):
         self.ow.reset(True)
-        self.ow.select_rom(rom)
+        self.ow.writebyte(self.ow.SKIP_ROM)
         self.ow.writebyte(_RD_SCRATCH)
         self.ow.readinto(self.buf)
         if self.ow.crc8(self.buf):
             raise Exception("CRC error")
         return self.buf
 
-    def write_scratch(self, rom, buf):
+    def write_scratch(self, buf):
         self.ow.reset(True)
-        self.ow.select_rom(rom)
+        self.ow.writebyte(self.ow.SKIP_ROM)
         self.ow.writebyte(_WR_SCRATCH)
         self.ow.write(buf)
 
-    def read_temp(self, rom):
-        buf = self.read_scratch(rom)
-        if rom[0] == 0x10:
-            if buf[1]:
-                t = buf[0] >> 1 | 0x80
-                t = -((~t + 1) & 0xFF)
-            else:
-                t = buf[0] >> 1
-            return t - 0.25 + (buf[7] - buf[6]) / buf[7]
-        else:
-            t = buf[1] << 8 | buf[0]
-            if t & 0x8000:  # sign bit set
-                t = -((t ^ 0xFFFF) + 1)
-            return t / 16
+    def copy_scratch(self):
+        self.ow.reset(True)
+        self.ow.writebyte(self.ow.SKIP_ROM)
+        self.ow.writebyte(_CP_SCRATCH)
 
-    def get_rom(self):
-        tries = 0
-        while tries < 100:
-            tries += 1
-            roms = self.scan()
-            if len(roms) > 0:
-                rom = ''.join([byte.to_bytes(1, 'big').hex() for byte in roms[0]])
-                return rom
-        return None
+    def read_temp(self):
+        buf = self.buf
+        t = buf[1] << 8 | buf[0]
+        if t & 0x8000:  # sign bit set
+            t = -((t ^ 0xFFFF) + 1)
+        return t / 16
+
+    def resolution(self, bits=None):
+        if bits is not None and 9 <= bits <= 12:
+            config = bytearray(3)
+            config[2] = ((bits - 9) << 5) | 0x1f
+            self.write_scratch(config)
+            return bits
+        else:
+            data = self.buf
+            return ((data[4] >> 5) & 0x03) + 9
 
     @property
     def info(self):
         return self.get_rom()
 
     def get_values(self):
-        if self.settings["rom"] is None:
-            self.settings["rom"] = self.get_rom()
-            self.settings_save()
         self.convert_temp()
-        sleep_ms(750)
-        rom = bytes.fromhex(self.settings["rom"])
-        temperature = self.read_temp(rom)
+        sleep_ms(375)
+        self.read_scratch()
+        if self.resolution() > 11:
+            sleep_ms(375)
+            self.read_scratch()
+            self.resolution(11)
+            self.copy_scratch()
+
+        temperature = self.read_temp()
         temperature += self.offset
         self.last_values = {"temperature": temperature}
         return int(temperature) != -127
@@ -196,7 +204,6 @@ class DS18X20:
             print(e)
             settings["Minimum"] = 0
             settings["Maximum"] = 60
-            settings["rom"] = None
             settings["Offset"] = 0.0
         finally:
             return settings
