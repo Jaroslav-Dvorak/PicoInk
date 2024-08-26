@@ -98,14 +98,14 @@ if __name__ == '__main__':
                     if connect_mqtt():
                         sensor.last_values["signal"] = rssi
                         if not send_state(**sensor.last_values):
-                            screens.widgets.tiny_text("!MQTT", 60, 1)
+                            screens.widgets.mqtt_indicator()
                             screens.eink.show(screens.widgets.img, partial=True)
                         MQTT.wait_msg()
                         MQTT.disconnect()
                         sleep_ms(200)
                         mqtt_ok = True
                     else:
-                        screens.widgets.tiny_text("!MQTT", 60, 1)
+                        screens.widgets.mqtt_indicator()
                         screens.eink.show(screens.widgets.img, partial=True)
                 STA.disconnect()
 
