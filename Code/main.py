@@ -81,10 +81,9 @@ if __name__ == '__main__':
     if device_run:
         from modes.mode_regular import load_show_save
         while True:
-            everything_ok = True
+            rssi = False
+            mqtt_ok = False
             sensor_ok = load_show_save(full_refresh, bat_soc, sensor)
-            if not sensor_ok:
-                everything_ok = False
             sensor.last_values["soc"] = bat_soc
             if wifi_active:
                 if sensor_ok:
@@ -99,18 +98,15 @@ if __name__ == '__main__':
                     if connect_mqtt():
                         sensor.last_values["signal"] = rssi
                         if not send_state(**sensor.last_values):
-                            everything_ok = False
                             screens.widgets.tiny_text("!MQTT", 60, 1)
                             screens.eink.show(screens.widgets.img, partial=True)
                         MQTT.wait_msg()
                         MQTT.disconnect()
-                        sleep_ms(500)
+                        sleep_ms(200)
+                        mqtt_ok = True
                     else:
-                        everything_ok = False
                         screens.widgets.tiny_text("!MQTT", 60, 1)
                         screens.eink.show(screens.widgets.img, partial=True)
-                else:
-                    everything_ok = False
                 STA.disconnect()
 
             if ble_active and sensor_ok:
@@ -121,7 +117,7 @@ if __name__ == '__main__':
             if wifi_active:
                 sleep_ms(1000)
 
-            if everything_ok:
+            if sensor_ok and bat_soc > 10 and ((rssi and mqtt_ok) or not wifi_active):
                 GREEN_LED.value(1)
             else:
                 RED_LED.value(1)
