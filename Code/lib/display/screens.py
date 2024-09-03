@@ -10,12 +10,33 @@ eink = Epd2in13bw(BUSY_PIN, RST_PIN, DC_PIN, CS_PIN, SPI_DISPLAY)
 
 
 def show_chart(values, minimum, maximum, batt_soc, full_refresh=False):
-    batt_coor = 150, 0
+
     if len(values) > 250:
         values.pop(0)
     widgets.clear()
-    widgets.chart(values, minimum, maximum)
-    widgets.battery_indicator(batt_soc, *batt_coor)
+    opt_values = widgets.chart(values, minimum, maximum)
+
+    if max(opt_values[40:62]) > 110:
+        widgets.wifi_indicator_coor = 40, 123
+    else:
+        widgets.wifi_indicator_coor = 40, 10
+
+    if max(opt_values[60:101]) > 110:
+        print(opt_values[60:101])
+        widgets.mqtt_indicator_coor = 60, 114
+    else:
+        widgets.mqtt_indicator_coor = 60, 1
+
+    if max(opt_values[145:182]) > 110:
+        widgets.battery_indicator(batt_soc, 150, 112)
+    else:
+        widgets.battery_indicator(batt_soc, 150, 0)
+
+    if max(opt_values[218:]) > 110:
+        widgets.tiny_text(str(values[-1]), 218, 114)
+    else:
+        widgets.tiny_text(str(values[-1]), 218, 0)
+
 
     eink.show(widgets.img, partial=not full_refresh)
 
@@ -91,6 +112,8 @@ def show_settings(settings, partial):
     for k, v in settings.items():
         if k[0].islower():
             continue
+        if "passw" in k.lower() and v:
+            v = "******"
         text = f"{k:<10}: {v}"
         widgets.tiny_text(text, 0, i*10)
         i += 1

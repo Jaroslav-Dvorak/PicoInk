@@ -7,6 +7,7 @@ class Widgets(Drawing):
     def __init__(self):
         super().__init__()
         self.wifi_indicator_coor = 40, 10
+        self.mqtt_indicator_coor = 60, 1
 
     def chart(self, values, minimum, maximum, color=BLACK):
         x = 0
@@ -44,8 +45,7 @@ class Widgets(Drawing):
         self.fill_rect(x+3, y-11, 20, 12, WHITE)
         self.tiny_text(str(minimum), x+5, y-8, color)
 
-        self.fill_rect(w-32, h, 33, 12, WHITE)
-        self.tiny_text(str(values[-1]), w-31, h, color)
+        return optimized_values
 
     def gauge(self, value, minimum, maximum):
         resolution = len(Gauge_needle_end_lookup)-1
@@ -134,3 +134,8 @@ class Widgets(Drawing):
 
     def wifi_indicator(self, x, y, strength, color=BLACK):
         self.fill_circle(x, y, 30, color=color)
+
+    def mqtt_indicator(self, x=None, y=None, color=BLACK):
+        if x is None or y is None:
+            x, y = self.mqtt_indicator_coor
+        self.tiny_text("!MQTT", x, y, color)

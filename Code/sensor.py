@@ -1,10 +1,9 @@
 
 # _____________________DS18X20_____________________________________________________
 
-from sensors.ds18x20 import DS18X20
+from sensors.ds18b20 import DS18B20
 from machine import Pin
-# sensor = DS18X20(Pin(19), filename="sensors/ds18x20_1.json")
-sensor = DS18X20(Pin(0), filename="sensors/ds18x20_1.json")
+sensor = DS18B20(Pin(0), filename="sensors/ds18b20_1.json")
 
 # _____________________SCD4X_____________________________________________________
 

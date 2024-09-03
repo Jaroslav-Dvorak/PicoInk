@@ -600,8 +600,8 @@ input[type="text"],
 input[type="number"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
-    /* margin-bottom: 5px; */
+    padding: 5px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     font-size: x-large;
 }
