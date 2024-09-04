@@ -59,6 +59,17 @@ Settings["BLE-name"] = ""
 Settings["widget"] = 0
 
 
+Verify_regex = {}
+Verify_regex["WiFi-SSID"] = r'^(?!\s)([\x20-\x7E]{0,32})(?<!\s)$'
+Verify_regex["WiFi-passw"] = r'^(|[\x20-\x7E]{8,63})$'
+Verify_regex["WiFi-IP"] = r'^(DHCP|((?!0\.0\.0\.0)(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|[1-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)){3})\/([1-9]|[1-2][0-9]|3[0-2]))$'
+Verify_regex["MQTT-brokr"] =r'^$|^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)|([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}|\[([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\])$'
+Verify_regex["MQTT-user"] = r'^[a-zA-Z0-9._-]{0,64}$'
+Verify_regex["MQTT-passw"] = r'^[\x20-\x7E]{0,64}$'
+Verify_regex["MQTT-name"] = r'^[\x20-\x7E]{0,64}$'
+Verify_regex["BLE-name"] = r'^[\x20-\x7E]{0,11}$'
+
+
 def settings_load():
     try:
         with open("settings.json", "r") as f:

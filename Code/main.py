@@ -1,7 +1,6 @@
 from measurement import batt_voltage, voltage_to_soc
 
 battery_voltage = batt_voltage()
-# battery_voltage = 2.66
 if battery_voltage < 2.6:                                   # turn off immediatelly to prevent draining battery
     from machine import Pin
     Pin(9, Pin.OUT).value(1)

@@ -2,13 +2,13 @@ import usocket as socket
 import network
 from collections import OrderedDict
 from lib.display.screens import show_settings, clear_display
-from nonvolatile import Settings, settings_save
+from nonvolatile import Settings, settings_save, Verify_regex
 from utime import sleep_ms
 from gpio_definitions import BTN_1
 import machine
 from sensor import sensor
 from lib.templates import websetup_style, byebye_style
-from lib.wireless.http_utils import unquote, parse_query_bytes, make_response
+from lib.wireless.http_utils import parse_query_bytes, make_response
 
 
 AP = network.WLAN(network.AP_IF)
@@ -80,6 +80,7 @@ def web_page():
     """
     return html
 
+
 def byebye_page():
     byebye = f"""
     <!DOCTYPE HTML>
@@ -106,7 +107,7 @@ def byebye_page():
 def parse_request(request: dict):
 
     for k, v in request.items():
-        if Settings.get(k) is not None:
+        if Settings.get(k) is not None and Verify_regex.get(k) is not None:
             Settings[k] = v
         if sensor.settings.get(k) is not None:
             sensor.settings[k] = v
