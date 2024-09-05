@@ -37,7 +37,6 @@ def show_chart(values, minimum, maximum, batt_soc, full_refresh=False):
     else:
         widgets.tiny_text(str(values[-1]), 218, 0)
 
-
     eink.show(widgets.img, partial=not full_refresh)
 
 
@@ -53,7 +52,8 @@ def show_big_val(curr_val, battery_soc, full_refresh=False):
 
 def show_gauge(curr_val, minimum, maximum, battery_soc, full_refresh=False):
     batt_coor = 215, 5
-    widgets.wifi_indicator_coor = 0, 15
+    widgets.wifi_indicator_coor = 0, 14
+    widgets.mqtt_indicator_coor = 20, 5
 
     curr_val = round(curr_val, 1)
     half = (minimum + maximum) / 2
