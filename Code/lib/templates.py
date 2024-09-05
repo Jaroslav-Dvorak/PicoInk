@@ -589,6 +589,9 @@ form {
 }
 .form-group {
     /* margin-bottom: 10px; */
+    /* background: #d8f4e4; */
+    border: 1px solid #999292;
+    padding: 10px;
 }
 label {
     display: flex;
@@ -599,18 +602,18 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="password"] {
-    width: 100%;
+    /* width: 100%; */
     padding: 5px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     box-sizing: border-box;
     font-size: x-large;
 }
 input[type="submit"] {
     width: 100%;
-    padding: 10px;
+    /* padding: 10px;  */
     cursor: pointer;
     box-sizing: border-box;
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 """
 

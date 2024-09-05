@@ -8,7 +8,7 @@ STA = network.WLAN(network.STA_IF)
 def wifi_connect():
     STA.active(True)
     STA.config(pm=0xa11140)  # Diable powersave mode
-    if Settings["WiFi-IP"] != "DHCP":
+    if Settings["WiFi-IP"]:
         ip, cidr = Settings["WiFi-IP"].split("/")
         cidr = int(cidr)
         mask = (0xffffffff >> (32 - cidr)) << (32 - cidr)

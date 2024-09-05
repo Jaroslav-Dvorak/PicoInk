@@ -2,7 +2,7 @@ import usocket as socket
 import network
 from collections import OrderedDict
 from lib.display.screens import show_settings, clear_display
-from nonvolatile import Settings, settings_save, Verify_regex
+from nonvolatile import Settings, settings_save
 from utime import sleep_ms
 from gpio_definitions import BTN_1
 import machine
@@ -31,24 +31,83 @@ def start_ap(ssid):
     return ip
 
 
-def web_page():
-    forms = ""
-    sensor_settings = list(sensor.settings.items())
-    general_settings = list(Settings.items())
-
-    for k, v in sensor_settings + general_settings:
+def forms_generator():
+    forms_sensor = '<div class="form-group">\n'
+    for k, v in sensor.settings.items():
         if k[0].islower():
             continue
-        if "passw" in k.lower():
-            form_type = "password"
-        else:
-            form_type = "text"
+        form_type = "text"
+        if k == "Offset":
+            form_type = '"number" step="0.1"'
+        elif k == "Minimum":
+            form_type = '"number"'
+        elif k == "Maximum":
+            form_type = '"number"'
 
-        forms += f"""
-                <label for="{k}">{k}:</label>
-                <input type={form_type} id="{k}" name="{k}" value="{v}" onchange="this.form.submit();">
+        forms_sensor += f"""
+        <form method="post" action="/" accept-charset="UTF-8">
+            <label for="{k}">{k}:</label>
+            <div style="display: flex;">
+                <input type={form_type} name="{k}" value="{v}" required>
+                <input type="submit" value="WRITE">
+            </div>
+        </form>
         """
+    forms_sensor += "</div>\n"
+    forms_general = '<div class="form-group">\n'
 
+    for k, v in Settings.items():
+        if k[0].islower():
+            continue
+        form_type = "text"
+        pattern = ".*"
+        title = ""
+        if k == "WiFi-SSID":
+            pattern = r'^(?!\s)([\x20-\x7E]{0,32})(?<!\s)$'
+            title = "No start/end spaces, max. 32 characters."
+        elif k == "WiFi-passw":
+            form_type = "password"
+            pattern = r'^(|[\x20-\x7E]{8,63})$'
+            title = "8-63 characters"
+        elif k == "WiFi-IP":
+            pattern = r'^$|^((?!0\.0\.0\.0)(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|[1-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?|0)){3})\/([1-9]|[1-2][0-9]|3[0-2])$'
+            title = "CIDR format. Example: 192.168.0.32/24 OR 10.0.0.154/8"
+        elif k == "MQTT-brokr":
+            pattern = r'^$|^(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))$|^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$'
+            title = "IP address or DNS name. Example: 192.168.0.1 OR broker.pubmosq.com"
+        elif k == "MQTT-user":
+            pattern = r'^[a-zA-Z0-9._-]{0,64}$'
+            title = "Max. 64 non-special characters."
+        elif k == "MQTT-passw":
+            form_type = "password"
+            pattern = r'^[\x20-\x7E]{0,64}$'
+            title = "Max. 64 characters."
+        elif k == "MQTT-name":
+            pattern = r'^[\x20-\x7E]{0,64}$'
+            title = "Max. 64 characters."
+        elif k == "BLE-name":
+            pattern = r'^[\x20-\x7E]{0,11}$'
+            title = "Max. 11 characters."
+
+        forms_general += f"""
+        <form method="post" action="/" accept-charset="UTF-8">
+            <label for="{k}">{k}:</label>
+            <div style="display: flex;">
+                <input type="{form_type}" name="{k}" value="{v}" pattern="{pattern}" title="{title}">
+                <input type="submit" value="WRITE">
+            </div>
+        </form>
+        """
+    forms_general += "</div>\n"
+
+    forms = forms_sensor+forms_general
+    with open("html.html", "w") as f:
+        f.write(forms)
+    return forms
+
+
+def web_page():
+    forms = forms_generator()
     html = f"""
     <!DOCTYPE HTML>
     <html>
@@ -61,18 +120,13 @@ def web_page():
     </head>
     <body>
         <div class="container">
-        <form method="post" action="/" accept-charset="UTF-8">
-            <div class="form-group">
-                {forms}
-            </div>
-            <input type="submit" value="OK">
-        </form>
+            {forms}
+        <br>
+        <br>
         <br>
             <form method="post" action="/" accept-charset="UTF-8">
-                <div class="form-group">
-                    <input type="text" id="save_form" name="save_form" value="save_form" style=display:None>
-                </div>
-                    <input type="submit" value="SAVE AND RESTART">
+                <input type="text" id="save_form" name="save_form" value="save_form" style=display:None>
+                <input type="submit" value="SAVE AND RESTART" style="height: 4rem;">
             </form>
         </div>
     </body>
@@ -107,7 +161,7 @@ def byebye_page():
 def parse_request(request: dict):
 
     for k, v in request.items():
-        if Settings.get(k) is not None and Verify_regex.get(k) is not None:
+        if Settings.get(k) is not None:
             Settings[k] = v
         if sensor.settings.get(k) is not None:
             sensor.settings[k] = v
