@@ -25,6 +25,58 @@ if battery_voltage < 2.7:                                 # show battery dead sc
     screens.eink.epd_hw_init()
 
 
+from gpio_definitions import BTN_1, BTN_2, BTN_3, GREEN_LED, DONE_PIN, RED_LED
+from time import sleep_ms
+if not BTN_1.value() and not BTN_2.value():
+    count_down = 5
+    while not BTN_1.value() and not BTN_2.value():
+        print(count_down)
+        count_down -= 1
+        sleep_ms(1000)
+        if count_down < 0:
+            from lib.display import screens
+            import os
+            from machine import reset
+            screens.widgets.tiny_text("FACTORY RESET?", 80, 50)
+            screens.widgets.tiny_text("YES", 75, 110)
+            screens.widgets.tiny_text("NO", 185, 110)
+            screens.eink.show(screens.widgets.img, partial=False)
+            def factory_reset():
+                def delete_files(path):
+                    try:
+                        for entry in os.ilistdir(path):
+                            entry_name = entry[0]
+                            full_path = path + '/' + entry_name
+                            try:
+                                if os.stat(full_path)[0] & 0x4000:  # 0x4000 is flag for directory
+                                    delete_files(full_path)  # Rekurzivly call this function
+                                elif entry_name.endswith('.json') or entry_name.endswith('.dat'):
+                                    os.remove(full_path)
+                                    print("Deleted:", full_path)
+                            except OSError as e:
+                                print("Delete error {}: {}".format(full_path, e))
+                    except OSError as e:
+                        print("Reading error {}: {}".format(path, e))
+                delete_files("/")
+
+            buttons_released = False
+            while True:
+                if BTN_1.value() and BTN_2.value():
+                    buttons_released = True
+                t = 0
+                if buttons_released:
+                    while not BTN_1.value():
+                        if t > 10:
+                            factory_reset()
+                            sleep_ms(100)
+                            reset()
+                        t += 1
+                        sleep_ms(10)
+
+                    if not BTN_2.value():
+                        reset()
+
+
 # Start Wireless ASAP
 from nonvolatile import Settings, settings_save, settings_load
 settings_load()
@@ -37,9 +89,7 @@ if ble_active:
     from lib.wireless.ble_advert import ble_advert, ble
 
 
-from gpio_definitions import BTN_1, BTN_2, BTN_3, GREEN_LED, DONE_PIN, RED_LED
 from lib.display import screens
-from time import sleep_ms
 from sensor import sensor
 
 if __name__ == '__main__':

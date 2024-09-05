@@ -1,9 +1,9 @@
-import usocket as socket
+import socket
 import network
 from collections import OrderedDict
 from lib.display.screens import show_settings, clear_display
 from nonvolatile import Settings, settings_save
-from utime import sleep_ms
+from time import sleep_ms
 from gpio_definitions import BTN_1
 import machine
 from sensor import sensor
@@ -101,8 +101,6 @@ def forms_generator():
     forms_general += "</div>\n"
 
     forms = forms_sensor+forms_general
-    with open("html.html", "w") as f:
-        f.write(forms)
     return forms
 
 

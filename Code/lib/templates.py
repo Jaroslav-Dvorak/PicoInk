@@ -577,10 +577,9 @@ body {
     background-color: #f4f4f4;
 }
 .container {
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
     background: #fff;
-    padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 8px;
 }
@@ -596,8 +595,9 @@ form {
 label {
     display: flex;
     margin-bottom: 5px;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: x-large;
+    color: darkblue;
 }
 input[type="text"],
 input[type="number"],
@@ -605,7 +605,7 @@ input[type="password"] {
     /* width: 100%; */
     padding: 5px;
     /* margin-bottom: 10px; */
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     font-size: x-large;
 }
 input[type="submit"] {
