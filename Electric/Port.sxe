@@ -2,16 +2,16 @@
 <fonts letter="155,0,0,0,Lucida Sans Unicode,000000" text="110,0,0,0,Lucida Sans Unicode,000000" type="85,0,0,0,Arial,FF00FF" refs="85,0,0,0,Arial,008000" wire_names="85,0,0,0,Arial,000000" cross_refs="85,0,0,1,Arial,0000FF" outlets="85,0,0,0,Arial,000000" reports="85,0,0,0,Arial,000000"/>
 <PrintSettings PrinterName="" PaperSize="9" FormName="A4" SheetSizeX="210" SheetSizeY="297" WantsCustom="0" CustomSizeX="283" CustomSizeY="203"/>
 <PrintReportSettings paper_size_enum="9" sheet_size_x="210" sheet_size_y="297" color_bg_even="15727333" color_bg_header="8454143" color_grid="16777215"/>
-<PrinterSettings PaperSizeX="2770" PaperSizeY="1900" PhysicalOffestTenthMm_X="29" PhysicalOffestTenthMm_Y="30"/>
+<PrinterSettings PaperSizeX="2969" PaperSizeY="2099" PhysicalOffestTenthMm_X="50" PhysicalOffestTenthMm_Y="50"/>
 <tb use="1" name="C:\Users\Public\Documents\ProfiCAD Library\_TB\standard9.ptb"/>
-<PageSettings bgColor="FFFFFF" zoom="150" frame="NO" showT="YES" showV="YES" includeMargins="YES"/>
+<PageSettings bgColor="FFFFFF" zoom="200" frame="NO" showT="YES" showV="YES" includeMargins="YES"/>
 <RefGridSettings FieldSize="50"/>
 <NumberingWire Over="1" Digits="3" TypeRenumbering="0" ShowWireName="0" WireLabelDist_a="4" WireLabelDist_b="10" WireLabelDist_c="7"/>
 <summary>
 <field name="_pcs" value=""/>
 <field name="_sc" value=""/>
 <field name="author" value=""/>
-<field name="author cisloDok date druhDokumentu jazyk nazev nazevDopln odd prezkousel statusDokumentu techRef zmena" value=""/>
+<field name="author cisloDok date druhDokum" value=""/>
 <field name="cisloDok" value=""/>
 <field name="date" value="05.08.2024"/>
 <field name="druhDokumentu" value=""/>
@@ -97,6 +97,8 @@
 <summary>
 <field name="_du" value="mm"/>
 <field name="_pa" value="1"/>
+<field name="_pcs" value=""/>
+<field name="_pcsc" value=""/>
 <field name="_po" value="1"/>
 <field name="_potb" value="1"/>
 <field name="_sc" value=""/>
@@ -184,17 +186,19 @@
 </attributes>
 </elem>
 <text x="1260" y="360" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GND</text>
-<text x="860" y="380" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">3V3</text>
-<text x="840" y="600" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_0</text>
-<text x="840" y="500" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_1</text>
-<text x="840" y="720" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_5</text>
-<text x="995" y="760" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_4</text>
-<text x="1096" y="760" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_3</text>
+<text x="840" y="360" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">3V3</text>
+<text x="820" y="600" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_0</text>
+<text x="820" y="500" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_1</text>
+<text x="840" y="740" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_5</text>
+<text x="995" y="780" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_4</text>
+<text x="1096" y="780" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_3</text>
 <text x="1260" y="740" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_2</text>
 <text x="1280" y="600" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_6</text>
 <text x="1280" y="500" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_7</text>
 <text x="1000" y="320" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_26</text>
 <text x="1100" y="320" a="900" f="110,0,0,0,Lucida Sans Unicode,000000" al="9">GP_27</text>
+<rect left="920" top="420" right="1180" bottom="680"/>
+<rect left="880" top="380" right="1220" bottom="720"/>
 </layer>
 </layers>
 </page>
