@@ -1,6 +1,6 @@
 # PicoInk 
 
-![overview](./picts/overview.png)
+![overview](./Doc/picts/overview.png)
 
 PicoInk byl vyvinutý za účelem měření fyzikálních veličin v místech, kde není třeba měřit velice často, ale postačuje jedno měření za 15 minut. Například: teplota, výška hladiny, koncentrace CO2, vlhkost půdy, vlhkost vzduchu, a podobně. Z této podstaty byl v návrhu kladen důraz na dlouhou výdrž baterie. 
 Oproti podobným zařízením, které využívají deep-sleep režim mikrokontroléru, se zde o periodické měření stará externí časovací obvod TPL5110, který má v odpočítávací fázi téměř neměřitelnou spotřebu (35nA). 
