@@ -14,9 +14,10 @@ V případě využití WiFi byl zvolen protokol MQTT, který lze rovněž vcelku
 Baterií je myšlen akumulátor typu 18650, který je možno dobít přes USB-C konektor.
 Pro rychlou výměnu lze baterii vyjmou a nahradit baterií čerstvě nabitou.
 
-PicoInk je fyzicky složen ze dvou částí: 
-Hlavní část obsahující elektroniku, baterii, displej a desku spojů.
-Modul, který je odnímatelný. Podle jeho typu zařízení plní svůj účel - zde je umístěn snímač.
+PicoInk je fyzicky složen ze dvou částí:
+* Hlavní část obsahující elektroniku, baterii, displej a desku spojů.
+* Modul, který je odnímatelný. Podle jeho typu zařízení plní svůj účel - zde je umístěn snímač.
+
 Spojení mezi těmito částmi zajišťuje konektor, přes který lze modul napájet. Buďto z 3.3V zdroje mikrokontroléru nebo přímo z baterie. 
 Dále obsahuje piny, jenž lze použít pro analogové měření nebo sběrnice UART, SPI, I2C, OneWire (viz.doc).
 PicoInk je možné po úpravě software využívat i bez modulu. Například pro zobrazování online dat.
