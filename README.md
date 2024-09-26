@@ -3,7 +3,7 @@
 ![overview](./Doc/picts/overview.png)
 
 PicoInk byl vyvinutý za účelem měření fyzikálních veličin v místech, kde není třeba měřit velice často, ale postačuje jedno měření za 15 minut. Například: teplota, výška hladiny, koncentrace CO2, vlhkost půdy, vlhkost vzduchu, a podobně. Z této podstaty byl v návrhu kladen důraz na dlouhou výdrž baterie. 
-Oproti podobným zařízením, které využívají deep-sleep režim mikrokontroléru, se zde o periodické měření stará externí časovací obvod TPL5110, který má v odpočítávací fázi téměř neměřitelnou spotřebu (35nA). 
+Oproti podobným zařízením, které využívají deep-sleep režim mikrokontroléru, se zde o periodické měření stará externí časovací obvod [TPL5110](https://www.ti.com/lit/ds/symlink/tpl5110.pdf), který má v odpočítávací fázi téměř neměřitelnou spotřebu (35nA). 
 Dalším prvkem, který přispívá k dlouhé výdrži baterie je e-inkový displej, který ze své technické podstaty zobrazuje informace, přestože je baterie odpojena. Za normálních okolností musí displej po připojení k napájení projít tzv. full-refreshem. Full-refresh není příliš estetická záležitost a je také energeticky náročná. Tyto důvody vedly k vývoji knihovny obsluhující displej s možností částečného překreslení i bez full-refreshe.
 Horizontální rozlišení použitelného e-ink displeje je 250 pixelů. Pokud využijeme displej k vykreslení průběhu naměřených hodnot, přičemž každá hodnota zabere jeden pixel, můžeme vykreslit historii v grafu v délce necelých tří dnů, konkrétně 62,5 hodin.\
 **To z něj v dělá jedinečný bateriový teploměr schopen nepřetržitého zobrazení historie hodnot v grafu.**
