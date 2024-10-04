@@ -130,6 +130,7 @@ if __name__ == '__main__':
     if device_run:
         from modes.mode_regular import load_show_save
         while True:
+            DONE_PIN.value(0)
             rssi = False
             mqtt_ok = False
             sensor_ok = load_show_save(full_refresh, bat_soc, sensor)
