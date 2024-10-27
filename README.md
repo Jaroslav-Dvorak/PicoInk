@@ -41,7 +41,7 @@ Baterii je tedy nutno znovu vytáhnout a vložit. Ve zkratce - **baterii je něk
 - [ ] Návod k použití pro normální lidi (pdf)
 - [x] Tiskové instrukce (README.md ve složce 3D)
 - [ ] Instrukce ke stavbě zařízení (pdf)
-- [ ] Instrukce k naprogramování kontroléru (README.md ve složce Code)
-- [ ] Instrukce k výrobě PCB (README.md ve složce Electric)
+- [x] Instrukce k naprogramování kontroléru (README.md ve složce Code)
+- [x] Instrukce k výrobě PCB (README.md ve složce Electric)
 
 [Zde](https://www.facebook.com/profile.php?id=61566121148711) mě můžete přímo kontaktovat.
