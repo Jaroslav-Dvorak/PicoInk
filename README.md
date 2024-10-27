@@ -37,9 +37,9 @@ Z toho důvodu dojde k deaktivaci výstupu ochranného obvodu. \
 Baterii je tedy nutno znovu vytáhnout a vložit. Ve zkratce - **baterii je někdy třeba vložit na dvakrát.**
 
 **TODO list:**
-- [ ] Moduly pro různé bojlery
+- [x] Moduly pro různé bojlery
 - [ ] Návod k použití pro normální lidi (pdf)
-- [ ] Tiskové instrukce (README.md ve složce 3D)
+- [x] Tiskové instrukce (README.md ve složce 3D)
 - [ ] Instrukce ke stavbě zařízení (pdf)
 - [ ] Instrukce k naprogramování kontroléru (README.md ve složce Code)
 - [ ] Instrukce k výrobě PCB (README.md ve složce Electric)
