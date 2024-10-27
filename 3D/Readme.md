@@ -20,5 +20,5 @@ Modely byly v úspěšně tisknuty na tiskárně Bambulab A1.
 
 ![overview](./Horizontal.png)
 ![overview](./Vertical.png)
-![overview](./manual supports.png)
-![overview](./Variable layer height.png)
+![overview](./Manual_supports.png)
+![overview](./Variable_layer_height.png)
