@@ -12,7 +12,7 @@ Pro zasílání naměřených hodnot přes Bluetooth byl zvolen otevřený proto
 V případě využití WiFi byl zvolen protokol MQTT, který lze rovněž vcelku jednoduše zaintegrovat do Home Assistant systému.\
 **Výdrž baterie Liitokala 3500mAh s použitím teplotního a vlhkostního snímače SHT41 s vypnutým vyhříváním a připojení k WiFi s kvalitním signálem byla naměřena na 6 měsíců, cca 10000 měření.**
 Baterií je myšlen akumulátor typu 18650, který je možno dobít přes USB-C konektor.
-Pro rychlou výměnu lze baterii vyjmou a nahradit baterií čerstvě nabitou.
+Pro rychlou výměnu lze baterii vyjmout a nahradit baterií čerstvě nabitou.
 
 PicoInk je fyzicky složen ze dvou částí:
 * Hlavní část obsahující elektroniku, baterii, displej a desku spojů.
@@ -30,11 +30,12 @@ Avšak PicoInk byl otestován a má softwarovou přípravu na:
 * Teplotní a vlhkostní snímač SHT41, vše OK.
 * Teplotní snímač Dallas DS18B20, nutné použít originál, jinak vše OK.
 
-**Známé bugy:**
-* Při delším vyjmutí baterie dojde k vybití vnitřního kondenzátoru. \
+**Známé bugy:**\
+~~* Při delším vyjmutí baterie dojde k vybití vnitřního kondenzátoru. \
 Při opětovném vložení nabitého článku dochází k proudové mikrošpičce. \
 Z toho důvodu dojde k deaktivaci výstupu ochranného obvodu. \
-Baterii je tedy nutno znovu vytáhnout a vložit. Ve zkratce - **baterii je někdy třeba vložit na dvakrát.**
+Baterii je tedy nutno znovu vytáhnout a vložit. Ve zkratce - **baterii je někdy třeba vložit na dvakrát.**~~\
+(Vyřešeno změnou hodnoty kondenzátoru C1 z 1uF na 100nF)
 
 **TODO list:**
 - [x] Moduly pro různé bojlery

@@ -4,7 +4,9 @@
 3. Připojit Rpi Pico W k PC pomocí microUSB kabelu.
 2. Do kontroléru nahrát firmware [micropythonu](https://micropython.org/download/RPI_PICO/).
 2. Použít k připojení k Rpi Pico W např. [Thonny](https://thonny.org) nebo PyCharm s Micropython pluginem.
-3. Flash obsah celého (tohoto) adresáře "Code" do RpiPico W.
+3. Flash obsah celého (tohoto) adresáře "Code" do RpiPico W 
+   * vyjma souboru README.md
+   * můžeme také vynechat soubory ze složky sensors dle použitého typu senzoru.
 
 
 ### Výběr typu snímače
