@@ -83,8 +83,8 @@ def forms_generator():
             pattern = r'^[\x20-\x7E]{0,64}$'
             title = "Max. 64 characters."
         elif k == "MQTT-name":
-            pattern = r'^[\x20-\x7E]{0,64}$'
-            title = "Max. 64 characters."
+            pattern = r'^[\x21-\x7E]{0,64}$'
+            title = "Max. 64 characters without space"
         elif k == "BLE-name":
             pattern = r'^[\x20-\x7E]{0,11}$'
             title = "Max. 11 characters."
