@@ -39,9 +39,10 @@ Baterii je tedy nutno znovu vytáhnout a vložit. Ve zkratce - **baterii je něk
 
 **TODO list:**
 - [x] Moduly pro různé bojlery
-- [ ] Návod k použití pro normální lidi (pdf)
+- [x] Návod k použití pro normální lidi (pdf)
 - [x] Tiskové instrukce (README.md ve složce 3D)
 - [ ] Instrukce ke stavbě zařízení (pdf)
+- [ ] Instrukce k výměně baterie a montáži/demontáži modulu (pdf)
 - [x] Instrukce k naprogramování kontroléru (README.md ve složce Code)
 - [x] Instrukce k výrobě PCB (README.md ve složce Electric)
 
