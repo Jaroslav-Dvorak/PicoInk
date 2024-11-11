@@ -1,6 +1,6 @@
 [Manuál - Popis a obsluha zařízení](./PicoInk_control_manual_cs.pdf)\
 [Manuál - MQTT nastavení](./PicoInk_MQTT_cs.pdf)\
-[Manuál - Stavba zařízení]() Not ready yet...\
+[Manuál - Stavba zařízení](./PicoInk_assembly_cs.pdf)\
 [Manuál - Instalační manuál]() Not ready yet..\
 [Video - nastavení zařízení](https://fb.watch/vx8vt5eCgY/)\
 [Video - stavba zařízení](https://www.youtube.com/watch?v=83LGPPGywaA)
