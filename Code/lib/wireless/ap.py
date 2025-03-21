@@ -76,7 +76,7 @@ def forms_generator():
             pattern = r'^$|^(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))$|^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$'
             title = "IP address or DNS name. Example: 192.168.0.1 OR broker.pubmosq.com"
         elif k == "MQTT-user":
-            pattern = r'^[a-zA-Z0-9._-]{0,64}$'
+            pattern = r'^[a-zA-Z0-9._\-]{0,64}$'
             title = "Max. 64 non-special characters."
         elif k == "MQTT-passw":
             form_type = "password"
